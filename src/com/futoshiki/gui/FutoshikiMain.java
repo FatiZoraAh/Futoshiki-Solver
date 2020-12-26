@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,10 +14,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -99,14 +103,48 @@ public class FutoshikiMain extends JFrame {
 		cp.setLayout(new BorderLayout());
 		JPanel east = new JPanel();
 		east.setLayout(new GridLayout(2, 1));
+		east.setBackground(Color.gray);
+		
 
 		east.setBorder(new EmptyBorder(20, 20, 20, 20));
 		cp.add(east, BorderLayout.EAST);
 		cp.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
-		this.setLocationRelativeTo(null);
+		
+		JPanel buttons = new JPanel();
+        buttons.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        JButton instructions = new JButton("Do you need instructions?");
+        instructions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame,
+                        "                            INSTRUCTIONS\n\n"
+                        + "To solve the futoshiki puzzle you must have one of\n"
+                        + "every number between 1 and the row length. You must also\n"
+                        + "obey the onstraints between squares for example if you\n"
+                        + "have a '>' this means the number on the left must be bigger\n"
+                        + "than the number on the right. Once you think you have\n"
+                        + "completed the puzzle you should press the 'Check' button\n"
+                        + "if you are correct a window will popup telling you it is\n"
+                        + "complete. If it is not correct the problems with the puzzle\n"
+                        + "will display in the bottom right corner. If you can't solve\n"
+                        + "the puzzle then pressing 'solve' will do it for you.\n");
+            }
+        });
+        c.gridx = 0;
+        c.gridy = 5;
+        buttons.add(instructions, c);
+       
+        
+        buttons.setBackground(Color.gray);
+        east.add(buttons);
+        
+		
 
 		grid = new JPanel();
 		grid.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
 
 		grid.setLayout(new GridLayout((2 * (puzzle.getGridSize()) - 1), 2 * (puzzle.getGridSize()) - 1));
 		for (int i = 0; i < (puzzle.getGridSize()); i++) {
@@ -117,12 +155,13 @@ public class FutoshikiMain extends JFrame {
 				JPanel jP = new JPanel();
 				jP.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
 				jP.setBackground(Color.white);
-				jP.setPreferredSize(new Dimension(300 / puzzle.getGridSize(), 300 / puzzle.getGridSize()));
+				
+				jP.setPreferredSize(new Dimension(200 / puzzle.getGridSize(), 100 / puzzle.getGridSize()));
 				if (puzzle.getSquare(i, j).getInitial() == true) {
 					JLabel num = new JLabel();
 					num.setFont(new Font("Arial", Font.BOLD, 200 / (puzzle.getGridSize())));
 					num.setBackground(Color.white);
-					num.setForeground(Color.red);
+					num.setForeground(Color.RED);
 					num.setText(puzzle.getSquare(i, j).getNumber() + "");
 					jP.add(num);
 				} else {
@@ -169,6 +208,7 @@ public class FutoshikiMain extends JFrame {
 					JPanel jP1 = new JPanel();
 
 					JLabel rCon = new JLabel();
+					
 					rCon.setFont(new Font("Arial", Font.BOLD, 200 / (puzzle.getGridSize())));
 					rCon.setText(puzzle.getRowConstraint(i, j).constraint() + "");
 
@@ -179,6 +219,7 @@ public class FutoshikiMain extends JFrame {
 			if (i < (puzzle.getGridSize()) - 1) {
 				for (int k = 0; k < (puzzle.getGridSize()); k++) {
 					JPanel jP2 = new JPanel();
+					
 
 					JLabel cCon = new JLabel();
 					cCon.setFont(new Font("Arial", Font.BOLD, 200 / (puzzle.getGridSize())));
@@ -199,6 +240,7 @@ public class FutoshikiMain extends JFrame {
 
 		pack();
 		setVisible(true);
+		
 	}
 
 }
