@@ -14,14 +14,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+
 
 public class FutoshikiMain extends JFrame {
 
@@ -84,8 +87,8 @@ public class FutoshikiMain extends JFrame {
 						JOptionPane.showMessageDialog(frame, "Please enter a number greater than 0");
 					}
 					puzzle = new Grid(input);
-					// fill();
-					// start.dispose();
+					fill();
+					 //start.dispose();
 					createWindow();
 				} catch (NumberFormatException ee) {
 					JOptionPane.showMessageDialog(frame, "Only numbers can be entered");
@@ -93,7 +96,29 @@ public class FutoshikiMain extends JFrame {
 			}
 		});
 	}
-
+	private void setup() {
+        try {
+            int input = Integer.parseInt(JOptionPane.showInputDialog("What size would you like the grid?\n"
+                    + "(Numbers between 1 and 9 are recommended)"));
+            if (input <= 0) {
+                JOptionPane.showMessageDialog(frame, "Please enter a number greater than 0");
+                setup();
+            }
+            size = input;
+            puzzle = new Grid(size);
+            fill();
+            createWindow();
+        } catch (NumberFormatException ee) {
+            JOptionPane.showMessageDialog(frame, "Only numbers can be entered");
+            setup();
+        }
+    }
+	 private void fill() {
+	        puzzle.fillPuzzle();
+	        while (!puzzle.isLegal() || !puzzle.solvable()) {
+	            puzzle.fillPuzzle();
+	        }
+	    }
 	private void createWindow() {
 
 		JPanel grid = new JPanel();
@@ -112,33 +137,76 @@ public class FutoshikiMain extends JFrame {
 		
 		JPanel buttons = new JPanel();
         buttons.setLayout(new GridBagLayout());
+        
         GridBagConstraints c = new GridBagConstraints();
 
-        JButton instructions = new JButton("Do you need instructions?");
+        JButton instructions = new JButton("Do you need Help?");
+        instructions.setBounds(181, 227, 89, 23);
+        
         instructions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame,
-                        "                            INSTRUCTIONS\n\n"
-                        + "To solve the futoshiki puzzle you must have one of\n"
-                        + "every number between 1 and the row length. You must also\n"
-                        + "obey the onstraints between squares for example if you\n"
-                        + "have a '>' this means the number on the left must be bigger\n"
-                        + "than the number on the right. Once you think you have\n"
-                        + "completed the puzzle you should press the 'Check' button\n"
-                        + "if you are correct a window will popup telling you it is\n"
-                        + "complete. If it is not correct the problems with the puzzle\n"
-                        + "will display in the bottom right corner. If you can't solve\n"
-                        + "the puzzle then pressing 'solve' will do it for you.\n");
+                        "                            ");
             }
         });
+        JButton solve        = new JButton("       Solve       ");
+        solve.setPreferredSize(new Dimension(200, 30));
+        solve.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (puzzle.solvable()) {
+                    puzzle.solution();
+                    createWindow();
+                    JOptionPane.showMessageDialog(frame, "The puzzle has been solved");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "The puzzle can't be solved, press 'check' and change accordingly");
+                }
+            }
+        });
+        JButton newP = new JButton("New Puzzul");
+        newP.setPreferredSize(new Dimension(200, 30));
+
+        newP.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+            	 setup();
+                
+            }
+        }
+        );
+        JButton newPuzzle = new JButton("Generate");
+        newPuzzle.setPreferredSize(new Dimension(200, 30));
+        newPuzzle.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                fill();
+                createWindow();
+            }
+        }
+        );
+        JLabel thankU = new JLabel("");
+
+        thankU.setIcon(new ImageIcon("C:\\Users\\dell\\Desktop\\Futoshiki-logo.png"));
         c.gridx = 0;
-        c.gridy = 5;
+        c.gridy = 0;
         buttons.add(instructions, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        buttons.add(solve, c);
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridx = 0;
+        c.gridy = 2;
+        buttons.add(newP, c);
+        buttons.add(newPuzzle, c);
        
         
         buttons.setBackground(Color.gray);
         east.add(buttons);
+        east.add(thankU);
         
 		
 
