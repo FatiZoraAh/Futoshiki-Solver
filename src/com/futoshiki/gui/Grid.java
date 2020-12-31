@@ -15,7 +15,8 @@ import java.util.Random;
  */
 public class Grid implements Serializable {
 
-    private Square[][] numGrid;
+	private static final long serialVersionUID = 1L;
+	private Square[][] numGrid;
     private Constraint[][] colGrid;
     private Constraint[][] rowGrid;
     private final int gridSize;
@@ -113,7 +114,7 @@ public class Grid implements Serializable {
      *
      * @return a HashSet of the NotNumbers. 
      */
-    public HashSet getNotNumbers(int row, int col) {
+    public HashSet<Integer> getNotNumbers(int row, int col) {
         if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
             System.err.println("Not in range of the indexed grid");
             return null;
@@ -282,7 +283,6 @@ public class Grid implements Serializable {
                 setRowConstraint(random.nextInt(gridSize), random.nextInt(gridSize - 1), ">");
             }
 
-            int cConRand = random.nextInt(3);
             if (rConRand <= 1) {
                 setColConstraint(random.nextInt(gridSize - 1), random.nextInt(gridSize), "V");
             } else {
@@ -476,7 +476,6 @@ public class Grid implements Serializable {
     public String toString() {
 
         String print = "";
-        int n = 0;
         if (gridSize < 10) {
             for (int i = 0; i < gridSize; i++) {
                 for (int a = 0; a < gridSize; a++) {

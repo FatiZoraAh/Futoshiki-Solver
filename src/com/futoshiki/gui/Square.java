@@ -11,7 +11,8 @@ import java.util.HashSet;
 
 public class Square implements Serializable {
 
-    private int row;
+	private static final long serialVersionUID = 1L;
+	private int row;
     private int col;
     private int number;
     private HashSet<Integer> notNumber;
@@ -107,7 +108,7 @@ public class Square implements Serializable {
      *
      * @return the numbers the user thinks the square can not be.
      */
-    public HashSet getNotNumber() {
+    public HashSet<Integer> getNotNumber() {
         return notNumber;
     }
 

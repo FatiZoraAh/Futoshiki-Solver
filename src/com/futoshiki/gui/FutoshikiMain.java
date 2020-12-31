@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -53,6 +50,7 @@ public class FutoshikiMain extends JFrame {
 
 	
 	public FutoshikiMain() {
+		setTitle("Futoshiki/AHSAYNI Fatima Zahrae");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -173,17 +171,23 @@ public class FutoshikiMain extends JFrame {
 		menu.add(solve);
 		
 		
-		JButton generate = new JButton("Generate");
-		generate.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                fill();
-                createWindow();
-            }
-        }
-        );
-		generate.setBounds(20, 303, 89, 23);
-		menu.add(generate);
+		JButton check = new JButton("Check");
+		check.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!puzzle.isLegal()) {
+                	JOptionPane.showMessageDialog(frame, "Not complete!");
+                } else if (puzzle.isFull() && puzzle.isLegal()) {
+                   
+                    JOptionPane.showMessageDialog(frame, "Complete!");
+                } else {
+                	
+                }
+            }});
+       
+		check.setBounds(20, 303, 89, 23);
+		menu.add(check);
 		
 		JButton NewPuzzul = new JButton("New Puzzul");
 		NewPuzzul.addActionListener(
