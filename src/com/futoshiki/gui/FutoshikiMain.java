@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -68,17 +69,27 @@ public class FutoshikiMain extends JFrame {
 
 		JLabel sizeQuestion = new JLabel("Choose grid size:");
 		sizeQuestion.setFont(new Font("Tahoma", Font.BOLD, 16));
-		sizeQuestion.setBounds(141, 75, 190, 35);
+		sizeQuestion.setBounds(133, 127, 190, 35);
 		sizeIns.add(sizeQuestion);
 
 		entry = new JTextField();
-		entry.setBounds(162, 132, 86, 20);
+		entry.setBounds(162, 198, 86, 20);
 		sizeIns.add(entry);
 		entry.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("please press enter once you have entered the size");
-		lblNewLabel.setBounds(95, 109, 305, 14);
+		lblNewLabel.setBounds(91, 173, 305, 14);
 		sizeIns.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\dell\\Downloads\\c2784b16-192e-4397-b555-08c1f88a342f_200x200.png"));
+		lblNewLabel_1.setBounds(108, 0, 216, 135);
+		sizeIns.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\dell\\Desktop\\couleur.jpg"));
+		lblNewLabel_2.setBounds(0, 0, 424, 251);
+		sizeIns.add(lblNewLabel_2);
 		entry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -119,55 +130,63 @@ public class FutoshikiMain extends JFrame {
 	            puzzle.fillPuzzle();
 	        }
 	    }
-	private void createWindow() {
+	public void createWindow() {
 
 		JPanel grid = new JPanel();
 
 		JPanel cp = (JPanel) getContentPane();
 		cp.removeAll();
 		cp.setLayout(new BorderLayout());
-		JPanel east = new JPanel();
-		east.setLayout(new GridLayout(2, 1));
-		east.setBackground(Color.gray);
+		JPanel menu = new JPanel();
+		menu.setLayout(new FlowLayout());
+		menu.setBackground(new Color(207,163,139));
 		
 
-		east.setBorder(new EmptyBorder(20, 20, 20, 20));
-		cp.add(east, BorderLayout.EAST);
+		menu.setBorder(new EmptyBorder(20, 20, 20, 20));
+		cp.add(menu, BorderLayout.SOUTH);
+		cp.setBackground(new Color(184,164,163));
 		cp.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
 		
-		JPanel buttons = new JPanel();
-        buttons.setLayout(new GridBagLayout());
-        
-        GridBagConstraints c = new GridBagConstraints();
-
-        JButton instructions = new JButton("Do you need Help?");
-        instructions.setBounds(181, 227, 89, 23);
-        
-        instructions.addActionListener(new ActionListener() {
+		JButton help = new JButton("help");
+		help.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame,
-                        "                            ");
+                JOptionPane.showMessageDialog(null,
+                        "    welll just play u stupid                         ");
             }
         });
-        JButton solve        = new JButton("       Solve       ");
-        solve.setPreferredSize(new Dimension(200, 30));
-        solve.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (puzzle.solvable()) {
-                    puzzle.solution();
-                    createWindow();
-                    JOptionPane.showMessageDialog(frame, "The puzzle has been solved");
-                } else {
-                    JOptionPane.showMessageDialog(frame, "The puzzle can't be solved, press 'check' and change accordingly");
-                }
-            }
-        });
-        JButton newP = new JButton("New Puzzul");
-        newP.setPreferredSize(new Dimension(200, 30));
+		help.setBounds(20, 237, 89, 23);
+		menu.add(help);
+		JButton solve = new JButton("Solve");
+		solve.addActionListener(new ActionListener() {
+		 public void actionPerformed(ActionEvent e) {
+             if (puzzle.solvable()) {
+                 puzzle.solution();
+                 createWindow();
+                 JOptionPane.showMessageDialog(null, "The puzzle has been solved");
+             } else {
+                 JOptionPane.showMessageDialog(null, "The puzzle can't be solved, press 'check' and change accordingly");
+             }
+		 }
+         });
+		solve.setBounds(20, 271, 89, 23);
+		menu.add(solve);
+		
+		
+		JButton generate = new JButton("Generate");
+		generate.addActionListener(new ActionListener() {
 
-        newP.addActionListener(
+            public void actionPerformed(ActionEvent arg0) {
+                fill();
+                createWindow();
+            }
+        }
+        );
+		generate.setBounds(20, 303, 89, 23);
+		menu.add(generate);
+		
+		JButton NewPuzzul = new JButton("New Puzzul");
+		NewPuzzul.addActionListener(
                 new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e
@@ -177,41 +196,26 @@ public class FutoshikiMain extends JFrame {
             }
         }
         );
-        JButton newPuzzle = new JButton("Generate");
-        newPuzzle.setPreferredSize(new Dimension(200, 30));
-        newPuzzle.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                fill();
-                createWindow();
-            }
-        }
-        );
-        JLabel thankU = new JLabel("");
-
-        thankU.setIcon(new ImageIcon("C:\\Users\\dell\\Desktop\\Futoshiki-logo.png"));
-        c.gridx = 0;
-        c.gridy = 0;
-        buttons.add(instructions, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        buttons.add(solve, c);
-        c.gridx = 0;
-        c.gridy = 3;
-        c.gridx = 0;
-        c.gridy = 2;
-        buttons.add(newP, c);
-        buttons.add(newPuzzle, c);
-       
-        
-        buttons.setBackground(Color.gray);
-        east.add(buttons);
-        east.add(thankU);
+		NewPuzzul.setBounds(20, 349, 89, 23);
+		menu.add(NewPuzzul);
+		
+		JButton Quit = new JButton("Quit");
+		Quit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Thank you for playing");
+				System.exit(0);
+			}
+		});
+		Quit.setBounds(20, 407, 89, 23);
+		menu.add(Quit);
+		
+		
         
 		
 
 		grid = new JPanel();
 		grid.setBorder(new EmptyBorder(10, 10, 10, 10));
+		grid.setBackground(new Color(184,164,163));
 		
 
 		grid.setLayout(new GridLayout((2 * (puzzle.getGridSize()) - 1), 2 * (puzzle.getGridSize()) - 1));
@@ -221,6 +225,7 @@ public class FutoshikiMain extends JFrame {
 				int j1 = j;
 
 				JPanel jP = new JPanel();
+				jP.setBackground(new Color(184,164,163));
 				jP.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
 				jP.setBackground(Color.white);
 				
@@ -274,8 +279,10 @@ public class FutoshikiMain extends JFrame {
 				grid.add(jP);
 				if (j < (puzzle.getGridSize()) - 1) {
 					JPanel jP1 = new JPanel();
+					jP1.setBackground(new Color(184,164,163));
 
 					JLabel rCon = new JLabel();
+					rCon.setBackground(new Color(184,164,163));
 					
 					rCon.setFont(new Font("Arial", Font.BOLD, 200 / (puzzle.getGridSize())));
 					rCon.setText(puzzle.getRowConstraint(i, j).constraint() + "");
@@ -287,9 +294,10 @@ public class FutoshikiMain extends JFrame {
 			if (i < (puzzle.getGridSize()) - 1) {
 				for (int k = 0; k < (puzzle.getGridSize()); k++) {
 					JPanel jP2 = new JPanel();
-					
+					jP2.setBackground(new Color(184,164,163));
 
 					JLabel cCon = new JLabel();
+					cCon.setBackground(new Color(184,164,163));
 					cCon.setFont(new Font("Arial", Font.BOLD, 200 / (puzzle.getGridSize())));
 
 					cCon.setText(puzzle.getColConstraint(i, k).constraint() + "");
@@ -297,6 +305,7 @@ public class FutoshikiMain extends JFrame {
 					grid.add(jP2);
 					if (k < (puzzle.getGridSize()) - 1) {
 						JPanel empty = new JPanel();
+						empty.setBackground(new Color(184,164,163));
 
 						grid.add(empty);
 					}
@@ -310,5 +319,4 @@ public class FutoshikiMain extends JFrame {
 		setVisible(true);
 		
 	}
-
 }
