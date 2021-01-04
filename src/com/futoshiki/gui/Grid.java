@@ -1,40 +1,29 @@
 package com.futoshiki.gui;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Random;
 
 
 
-/**
- * This is the class which put all the classes together to make a working
- * futoshiki puzzle. In this class the filling printing and checking are all
- * done.
- *
- * @author ca335
+/*
+ *la classe responsable de l'impression et du contrôle du remplissage, 
+ *elle rassemble toutes les classes
  */
 public class Grid implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	//tableau 
 	private Square[][] numGrid;
     private Constraint[][] colGrid;
     private Constraint[][] rowGrid;
+    // the size of the grid we choose
     private final int gridSize;
     private Random random = new Random();
 
+   
+     
     /*
-    public static void main(String[] args) {
-        FutoshikiGrid x = new FutoshikiGrid(5);
-        x.fillPuzzle();
-        System.out.println(x);
-        x.isLegal();
-    }
-     */
-    /**
-     * Constructor which initializes all the fields and assigns an appropriate
-     * object to every cell of the arrays
-     *
-     * @param gridSize the size you want the grid to be.
+     * constructeur qui initialise tous les attributs a chaque cellule de grid
      */
     public Grid(int gridSize) {
         this.gridSize = gridSize;
@@ -45,60 +34,49 @@ public class Grid implements Serializable {
         reset();
     }
 
-    /**
-     * Returns the value stored in a square of the grid as long as it within the
-     * indexed size.
-     *
-     * @param row is the indexed row of the square that you want.
-     * @param col is the indexed column of the square that you want.
-     * @return returns the number in the square where the row and col intersect.
-     */
     public Square getSquare(int row, int col) {
+    	//row est la ligne indexée du carré qu'on a choisi.
+    	//col est la colonne indexée du carré qu'on a choisi.
         if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
             System.err.println("Not in range of the indexed grid");
         }
+        //tout simplement , renvoie le nombre dans le carré où la ligne et le col se croisent.
         return numGrid[row][col];
     }
 
-    /**
-     * @return the 2D array numGrid
-     */
+   
     public Square[][] getNumGrid() {
+    	//le tableau 2D numGrid
         return numGrid;
     }
 
     /**
-     * Returns the constraint stored in a square of the row constraint grid
-     * (rowGrid) as long as it within the indexed size.
-     *
-     * @param row is the indexed row of the constraint that you want.
-     * @param col is the indexed column of the constraint that you want.
-     * @return the constraint in the square where the row and col intersect.
+     * Rnvoie la contrainte stockée dans un carré de la grille de contraintes de ligne
+      (rowGrid) tant qu'il est compris dans la taille indexée.
+   
      */
     public Constraint getRowConstraint(int row, int col) {
+    	//row est la ligne indexée de la contrainte souhaitée.
+    	//col est la colonne indexée de la contrainte souhaitée.
         if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
             System.err.println("Not in range of the indexed grid");
             return null;
         } else {
+        	//la contrainte dans le carré où la ligne et le col se croisent.
             return rowGrid[row][col];
         }
     }
 
-    /**
-     * @return the size of the grid
-     */
+  
     public int getGridSize() {
+    	//size of the Grid
         return gridSize;
     }
 
     /**
-     * Returns the constraint stored in a square of the column constraint grid
-     * (colGrid)as long as it within the indexed size.
-     *
-     * @param row is the indexed row of the constraint that you want.
-     * @param col is the indexed column of the constraint that you want.
-     * @return returns the constraint in the square where the row and col
-     * intersect.
+     * Rnvoie la contrainte stockée dans un carré de la grille de contraintes de colonne
+      tant qu'il est compris dans la taille indexée.
+   
      */
     public Constraint getColConstraint(int row, int col) {
         if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
@@ -109,34 +87,19 @@ public class Grid implements Serializable {
         }
     }
 
-    /*
-     * This method will return teh numbers of a specified square that the square can not contain.
-     *
-     * @return a HashSet of the NotNumbers. 
-     */
-    public HashSet<Integer> getNotNumbers(int row, int col) {
-        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
-            System.err.println("Not in range of the indexed grid");
-            return null;
-        } else {
-            return getSquare(row, col).getNotNumber();
-        }
-    }
-
+   
     /**
-     * Sets a square you choose with the number you want It has to meet the
-     * conditions which makes sure it lies within the size of the grid
+     * Définit un carré que vous choisissez avec le nombre que vous voulez Il doit répondre au
+     * conditions qui garantissent qu'il se situe dans la taille de la grille
      *
-     * @param row is the indexed row of the square that you want to put it in.
-     * @param col is the indexed col of the square that you want to put it in.
-     * @param input is the number you want to be put in the square at (row,
-     * col), it has to be greater than 0 and less than gridSize.
+    
      */
     public void setSquare(int row, int col, int input) {
         if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
             System.err.println("Out of range of the indexed grid");
             throw new IllegalArgumentException();
-        } else if (input < 0 || input > gridSize) { // equal to 0 so you can make it so a box is empty again
+        } else if (input < 0 || input > gridSize) { 
+        	// equal to 0 so you can make it so a box is empty again
             System.err.println("Your input has to be a postiive number and lower than " + gridSize);
             numGrid[row][col].setNumber(0);
             throw new IllegalArgumentException();
@@ -145,66 +108,36 @@ public class Grid implements Serializable {
         }
     }
 
-    /**
-     * Adds a number to the ArrayList in a square about which numbers the square
-     * can not be. It has to meet the conditions which make sure it lies within
-     * the size of the grid and the notNum has to be greater than 1 and less
-     * than gridSize.
-     *
-     * @param row is the indexed row of the square that you want to add the
-     * number it cant be to.
-     * @param col is the indexed col of the square that you want to add the
-     * number it cant be to.
-     * @param notNum is the number you think it can not be.
-     */
-    public void setNotNumbers(int row, int col, int notNum) {
-        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
-            System.err.println("Out of range of the indexed grid");
-        } else if (notNum < 1 || notNum > gridSize) {
-            System.err.println("Your input has to be a postiive number and lower than");
-        } else {
-            numGrid[row][col].setNotNumber(notNum);
-
-        }
-    }
+ 
 
     /**
-     * Adds a constraint to a square in the row constraints grid. It has to meet
-     * the conditions which make sure it lies within the size of the grid.
-     * Depending on the constraint it will make either a GreaterThan or LessThan
-     * object.
-     *
-     * @param row is the indexed row of the square that you want add the number
-     * it cant be to.
-     * @param col is the indexed col of the square that you want add the number
-     * it cant be to.
-     * @param constraint the constraint you want to set either ">" or "<".
-     *
+     *Ajoute une contrainte à un carré dans la grille des contraintes de ligne. 
+     *Il doit remplir les conditions qui garantissent qu'il se situe dans la taille de la grille.
+     *Selon la contrainte, il créera un objet GreaterThan ou LessThan.
      */
     public void setRowConstraint(int row, int col, String constraint) {
-        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {// equal to 0 so you can make it so a box is empty
+    	//row est la ligne indexée du carré que vous voulez ajouter le nombre ça ne peut pas être le cas.
+    	//col est la colonne indexée du carré que vous voulez ajouter le nombre ça ne peut pas être le cas.
+        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+        	// equal to 0 so you can make it so a box is empty
             System.err.println("Out of range of the indexed grid");
         } else if (constraint.equals("<")) {
             rowGrid[row][col] = new LessThan(getSquare(row, col), getSquare(row, col + 1));
-        } else if (constraint.equals(">")) {
+        } else if(constraint.equals(">")) {
             rowGrid[row][col] = new GreaterThan(getSquare(row, col), getSquare(row, col + 1));
         } else {
-            System.out.println("Your constraint is not valid");
+        	
         }
+        //constraint the constraint you want to set either ">" or "<"
     }
 
     /**
-     * Adds a constraint to a square in the row constraints grid. It has to meet
-     * the conditions which make sure it lies within the size of the grid.
-     *
-     * @param row is the indexed row of the square that you want add the number
-     * it cant be to.
-     * @param col is the indexed col of the square that you want add the number
-     * it cant be to.
-     * @param constraint the constraint you want to set either "^" or "V".
+     * Ajoute une contrainte à un carré dans la grille des contraintes de ligne. 
+     * Il doit remplir les conditions qui garantissent qu'il se situe dans la taille de la grille.
      */
     public void setColConstraint(int row, int col, String constraint) {
-        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {// equal to 0 so you can make it so a box is empty
+        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+        	// equal to 0 so you can make it so a box is empty
             System.err.println("Out of range of the indexed grid");
         } else if (constraint.equals("^")) {
             colGrid[row][col] = new LessThan(getSquare(row, col), getSquare(row + 1, col));
@@ -215,11 +148,7 @@ public class Grid implements Serializable {
         }
     }
 
-    /**
-     * Checks to see if the number grid is full
-     *
-     * @return returns true if every square of numGrid is full
-     */
+    // vérifier si la grille est complète
     public boolean isFull() {
         boolean bool = true;
         for (int i = 0; i < gridSize; i++) {
@@ -229,12 +158,11 @@ public class Grid implements Serializable {
                 }
             }
         }
+        //returns true if every square of numGrid is full
         return bool;
     }
 
-    /**
-     * resets the puzzles square back to original state
-     */
+   //réinitialise le carré des puzzles à son état d'origine
     public void reset() {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
@@ -255,9 +183,9 @@ public class Grid implements Serializable {
     }
 
     /**
-     * Adds the relevant values to each square. It give numbers between 1 and 5
-     * for the numbers and different constraints for the constraints. it picks a
-     * number of random squares adds it to them
+     * Ajoute les valeurs pertinentes à chaque carré. Il donne des nombres entre 1 et 5 pour les nombres 
+     * et différentes contraintes pour les contraintes. il choisit un certain nombre 
+     * de carrés aléatoires l'ajoute à eux
      */
     public void fillPuzzle() {
         reset();
@@ -293,16 +221,17 @@ public class Grid implements Serializable {
     }
 
     /**
-     * Checks that all the number in the numGrid horizontally are unique. If
-     * there is duplicates it will print out what number is duplicated and how
-     * many times it is duplicated.
+     * Vérifie que tous les nombres de numGrid horizontalement sont uniques. Si
+     * il y a des doublons, il imprimera quel numéro est dupliqué et comment
+     *plusieurs fois, il est dupliqué.
      *
-     * @return all the duplicate numbers in the rows.
+     *
      */
     public String checkRowNum() {
 
         String problem = "";
-        Square[][] tmp = new Square[gridSize][gridSize];  // use this so that when a number is checked it is
+        Square[][] tmp = new Square[gridSize][gridSize];  
+        // use this so that when a number is checked it is
         //turned to 0 so it is not checked again, doing this without effecting the orignal grid
         // also allows to count up how many cuplicates of each number
 
@@ -329,6 +258,7 @@ public class Grid implements Serializable {
                 }
             }
         }
+        //tous les numéros en double dans les lignes.
         return problem;
     }
 
@@ -570,7 +500,7 @@ public class Grid implements Serializable {
         }
         return tmp;
     }
-
+     //to solve the puzzle
     /**
      * solves the puzzle and put into the grid if it solvable
      * @return true if it can be solved

@@ -22,8 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-
-
 public class FutoshikiMain extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -33,9 +31,8 @@ public class FutoshikiMain extends JFrame {
 	private JFrame frame;
 	int size;
 
-	
 	public static void main(String[] args) {
-		
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -48,8 +45,8 @@ public class FutoshikiMain extends JFrame {
 		});
 	}
 
-	
 	public FutoshikiMain() {
+		// the welcome frame
 		setTitle("Futoshiki/AHSAYNI Fatima Zahrae");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -58,7 +55,6 @@ public class FutoshikiMain extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setLocationRelativeTo(null);
-		
 
 		JPanel sizeIns = new JPanel();
 		contentPane.add(sizeIns);
@@ -78,12 +74,13 @@ public class FutoshikiMain extends JFrame {
 		JLabel lblNewLabel = new JLabel("please press enter once you have entered the size");
 		lblNewLabel.setBounds(91, 173, 305, 14);
 		sizeIns.add(lblNewLabel);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\dell\\Downloads\\c2784b16-192e-4397-b555-08c1f88a342f_200x200.png"));
+		lblNewLabel_1
+				.setIcon(new ImageIcon("C:\\Users\\dell\\Downloads\\c2784b16-192e-4397-b555-08c1f88a342f_200x200.png"));
 		lblNewLabel_1.setBounds(108, 0, 216, 135);
 		sizeIns.add(lblNewLabel_1);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\dell\\Desktop\\couleur.jpg"));
 		lblNewLabel_2.setBounds(0, 0, 424, 251);
@@ -97,7 +94,7 @@ public class FutoshikiMain extends JFrame {
 					}
 					puzzle = new Grid(input);
 					fill();
-					 //start.dispose();
+
 					createWindow();
 				} catch (NumberFormatException ee) {
 					JOptionPane.showMessageDialog(frame, "Only numbers can be entered");
@@ -105,30 +102,38 @@ public class FutoshikiMain extends JFrame {
 			}
 		});
 	}
+
+	// control the entrance
 	private void setup() {
-        try {
-            int input = Integer.parseInt(JOptionPane.showInputDialog("What size would you like the grid?\n"
-                    + "(Numbers between 1 and 9 are recommended)"));
-            if (input <= 0) {
-                JOptionPane.showMessageDialog(frame, "Please enter a number greater than 0");
-                setup();
-            }
-            size = input;
-            puzzle = new Grid(size);
-            fill();
-            createWindow();
-        } catch (NumberFormatException ee) {
-            JOptionPane.showMessageDialog(frame, "Only numbers can be entered");
-            setup();
-        }
-    }
-	 private void fill() {
-	        puzzle.fillPuzzle();
-	        while (!puzzle.isLegal() || !puzzle.solvable()) {
-	            puzzle.fillPuzzle();
-	        }
-	    }
+		try {
+			int input = Integer.parseInt(JOptionPane.showInputDialog("Choose Grid Size:"));
+
+			if (input <= 0) {
+				JOptionPane.showMessageDialog(frame, "Please enter a number greater than 0");
+				setup();
+			}
+			size = input;
+			puzzle = new Grid(size);
+			fill();
+			createWindow();
+		} catch (NumberFormatException ee) {
+			JOptionPane.showMessageDialog(frame, "Only numbers can be entered");
+			setup();
+		}
+	}
+
+	// to fill the grid again
+	private void fill() {
+		puzzle.fillPuzzle();
+		while (!puzzle.isLegal() || !puzzle.solvable()) {
+			puzzle.fillPuzzle();
+		}
+	}
+
+	// the grid windows
 	public void createWindow() {
+
+		// I separated the grid panel in small panels and I worked on both
 
 		JPanel grid = new JPanel();
 
@@ -137,72 +142,70 @@ public class FutoshikiMain extends JFrame {
 		cp.setLayout(new BorderLayout());
 		JPanel menu = new JPanel();
 		menu.setLayout(new FlowLayout());
-		menu.setBackground(new Color(207,163,139));
-		
+		menu.setBackground(new Color(207, 163, 139));
 
 		menu.setBorder(new EmptyBorder(20, 20, 20, 20));
 		cp.add(menu, BorderLayout.SOUTH);
-		cp.setBackground(new Color(184,164,163));
+		cp.setBackground(new Color(184, 164, 163));
 		cp.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
-		
+		// button to get instructions about the game
 		JButton help = new JButton("help");
 		help.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,
-                        "    welll just play u stupid                         ");
-            }
-        });
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, 
+						"                        ");
+			}
+		});
 		help.setBounds(20, 237, 89, 23);
 		menu.add(help);
+		// to solve the game using the backtraking algo
 		JButton solve = new JButton("Solve");
 		solve.addActionListener(new ActionListener() {
-		 public void actionPerformed(ActionEvent e) {
-             if (puzzle.solvable()) {
-                 puzzle.solution();
-                 createWindow();
-                 JOptionPane.showMessageDialog(null, "The puzzle has been solved");
-             } else {
-                 JOptionPane.showMessageDialog(null, "The puzzle can't be solved, press 'check' and change accordingly");
-             }
-		 }
-         });
+			public void actionPerformed(ActionEvent e) {
+				if (puzzle.solvable()) {
+					puzzle.solution();
+					createWindow();//to regenerate the grid and put the solution 
+					JOptionPane.showMessageDialog(null, "The puzzle has been solved");
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"The puzzle can't be solved, press 'check' and change accordingly");
+				}
+			}
+		});
 		solve.setBounds(20, 271, 89, 23);
 		menu.add(solve);
-		
-		
+
+		// to check if the result that the player make is correct
 		JButton check = new JButton("Check");
-		check.addActionListener(
-                new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!puzzle.isLegal()) {
-                	JOptionPane.showMessageDialog(frame, "Not complete!");
-                } else if (puzzle.isFull() && puzzle.isLegal()) {
-                   
-                    JOptionPane.showMessageDialog(frame, "Complete!");
-                } else {
-                	
-                }
-            }});
-       
+		check.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!puzzle.isLegal()) {
+					JOptionPane.showMessageDialog(frame, "Not complete!");
+				} else if (puzzle.isFull() && puzzle.isLegal()) {
+
+					JOptionPane.showMessageDialog(frame, "Complete!");
+				} else {
+
+				}
+			}
+		});
+
 		check.setBounds(20, 303, 89, 23);
 		menu.add(check);
-		
-		JButton NewPuzzul = new JButton("New Puzzul");
-		NewPuzzul.addActionListener(
-                new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e
-            ) {
-            	 setup();
-                
-            }
-        }
-        );
+		// to play a new game (new grid)
+		JButton NewPuzzul = new JButton("New Puzzule");
+		NewPuzzul.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setup();
+
+			}
+		});
 		NewPuzzul.setBounds(20, 349, 89, 23);
 		menu.add(NewPuzzul);
-		
+		// to quit the game
 		JButton Quit = new JButton("Quit");
 		Quit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -212,15 +215,13 @@ public class FutoshikiMain extends JFrame {
 		});
 		Quit.setBounds(20, 407, 89, 23);
 		menu.add(Quit);
-		
-		
-        
-		
+
+		// the grid panel (panel variee selon le nombre choisi de cases)
 
 		grid = new JPanel();
 		grid.setBorder(new EmptyBorder(10, 10, 10, 10));
-		grid.setBackground(new Color(184,164,163));
-		
+		grid.setBackground(new Color(184, 164, 163));
+		// traitement des cases
 
 		grid.setLayout(new GridLayout((2 * (puzzle.getGridSize()) - 1), 2 * (puzzle.getGridSize()) - 1));
 		for (int i = 0; i < (puzzle.getGridSize()); i++) {
@@ -229,10 +230,10 @@ public class FutoshikiMain extends JFrame {
 				int j1 = j;
 
 				JPanel jP = new JPanel();
-				jP.setBackground(new Color(184,164,163));
+				jP.setBackground(new Color(184, 164, 163));
 				jP.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
 				jP.setBackground(Color.white);
-				
+
 				jP.setPreferredSize(new Dimension(200 / puzzle.getGridSize(), 100 / puzzle.getGridSize()));
 				if (puzzle.getSquare(i, j).getInitial() == true) {
 					JLabel num = new JLabel();
@@ -283,11 +284,11 @@ public class FutoshikiMain extends JFrame {
 				grid.add(jP);
 				if (j < (puzzle.getGridSize()) - 1) {
 					JPanel jP1 = new JPanel();
-					jP1.setBackground(new Color(184,164,163));
+					jP1.setBackground(new Color(184, 164, 163));
 
 					JLabel rCon = new JLabel();
-					rCon.setBackground(new Color(184,164,163));
-					
+					rCon.setBackground(new Color(184, 164, 163));
+
 					rCon.setFont(new Font("Arial", Font.BOLD, 200 / (puzzle.getGridSize())));
 					rCon.setText(puzzle.getRowConstraint(i, j).constraint() + "");
 
@@ -298,10 +299,10 @@ public class FutoshikiMain extends JFrame {
 			if (i < (puzzle.getGridSize()) - 1) {
 				for (int k = 0; k < (puzzle.getGridSize()); k++) {
 					JPanel jP2 = new JPanel();
-					jP2.setBackground(new Color(184,164,163));
+					jP2.setBackground(new Color(184, 164, 163));
 
 					JLabel cCon = new JLabel();
-					cCon.setBackground(new Color(184,164,163));
+					cCon.setBackground(new Color(184, 164, 163));
 					cCon.setFont(new Font("Arial", Font.BOLD, 200 / (puzzle.getGridSize())));
 
 					cCon.setText(puzzle.getColConstraint(i, k).constraint() + "");
@@ -309,7 +310,7 @@ public class FutoshikiMain extends JFrame {
 					grid.add(jP2);
 					if (k < (puzzle.getGridSize()) - 1) {
 						JPanel empty = new JPanel();
-						empty.setBackground(new Color(184,164,163));
+						empty.setBackground(new Color(184, 164, 163));
 
 						grid.add(empty);
 					}
@@ -321,6 +322,6 @@ public class FutoshikiMain extends JFrame {
 
 		pack();
 		setVisible(true);
-		
+
 	}
 }

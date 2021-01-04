@@ -17,13 +17,14 @@ public abstract class Constraint {
     private boolean colConstraint;
 
     /**
-     * Constructor which will initialise the fields. It also checks to see whether 
-     * you are making a row constraint or column constraint.
-     * 
-     * @param first the first futoshiki square of the constraint.
-     * @param second the second futoshiki square of the constraint.
+     *Constructeur qui initialisera les champs. 
+     *Il vérifie également si vous créez une contrainte de ligne 
+     *ou de colonne.
+     
      */
     public Constraint(Square first, Square second) {
+    	//first:le premier carré futoshiki de la contrainte
+    	//second:le 2eme carré futoshiki de la contrainte
         this.square1 = first;
         this.square2 = second;
 
@@ -37,43 +38,23 @@ public abstract class Constraint {
         }
     }
 
-    /**
-     * Returns the rowConstraint for retrieval of the field
-     * 
-     * @return rowConstraint for retrieval of the field
-     */
+    //Renvoie le rowConstraint pour la récupération du champ
     public boolean isRowConstraint() {
         return rowConstraint;
     }
 
-    /**
-     * Returns the rowConstraint for retrieval of the field
-     * 
-     * @return rowConstraint for retrieval of the field
-     */
+    //Renvoie le colConstraint pour la récupération du champ
     public boolean isColConstraint() {
         return colConstraint;
     }
 
-    /**
-     * Method to check that the futoshiki squares meet the constraints.
-     * 
-     * @return true if they do meet the constraint.
-     */
+   //Méthode pour vérifier que les carrés de futoshiki répondent aux contraintes
     public abstract boolean isCorrect();
     
-    /**
-     * Returns the symbol of the constraint that has been assigned.
-     * 
-     * @return symbol of the constraint.
-     */
+   //Renvoie le symbole de la contrainte qui a été affectée.
     public abstract String constraint();
 
-    /**
-     * Returns a word representation of the constraint.
-     * 
-     * @return word representation of the constraint.
-     */
+   //Renvoie une représentation mot de la contrainte
     public abstract String stringRep();
 }
 
